@@ -60,20 +60,82 @@ export default function AdminDashboard({ user, onNavigate }: Props) {
     { id: 'kpi_dashboard', label: 'KPI Dashboard', desc: 'Module KPI scorecards', color: 'bg-zinc-700' },
     { id: 'cctv', label: 'CCTV Monitoring', desc: 'Camera status & playback', color: 'bg-red-700' },
   ]
+  const quickLinks = modules.filter(m => allowed.includes(m.id)).slice(0, 6)
+  const rfpModules = [
+    'Exhibitor Floor', 'Registration', 'Auto Email', 'Stall Builder', 'AI Chatbot',
+    'Event Management', 'Logistics', 'Vehicle Access & Smart Parking', 'Delegation Handling',
+    'Media Management', 'Security & Incident', 'Badge Printing & Code Gen', 'Pass Management',
+    'Attendance Tracking', 'Content Management', 'API Integration', 'Biometric Verification',
+    'CCTV Surveillance', 'Cyber Security', 'Incident Management', 'Communication Log',
+    'Emergency Response', 'Social Monitoring', 'Meetings & MOU', 'Android App', 'iOS App',
+    'Harmony App', 'WhatsApp Module'
+  ]
+  const moduleCoverage = Math.round((allowed.length / rfpModules.length) * 100)
+
+  const quickAlerts = [
+    { label: 'Customs holds', value: 3, tone: 'bg-amber-100 text-amber-800 border-amber-200' },
+    { label: 'Critical incidents', value: 1, tone: 'bg-red-100 text-red-800 border-red-200' },
+    { label: 'SLA risk (badges)', value: '12 min', tone: 'bg-blue-100 text-blue-800 border-blue-200' },
+  ]
 
   return (
     <div className="space-y-6">
       {/* Banner */}
-      <div className="bg-primary rounded-xl p-6 text-primary-foreground flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-balance">Welcome, {user.name.split(' ').slice(-1)[0]}</h1>
-          <p className="text-primary-foreground/70 text-sm mt-1">IDEAS 2026 — International Defence Exhibition & Seminar</p>
-          <div className="flex flex-wrap items-center gap-3 mt-3">
-            <span className="text-xs bg-primary-foreground/20 px-3 py-1 rounded-full capitalize">{user.role.replace(/_/g, ' ')}</span>
-            <span className="text-xs text-primary-foreground/60">19 Nov — 22 Nov 2026 • Islamabad, Pakistan</span>
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.35),transparent_35%),radial-gradient(circle_at_70%_60%,rgba(16,185,129,0.35),transparent_40%)]" />
+        <div className="relative p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.2em] text-slate-300">IDEAS 2026 Command</p>
+            <h1 className="text-2xl font-bold mt-2">Welcome, {user.name.split(' ').slice(-1)[0]}</h1>
+            <p className="text-slate-300 text-sm mt-1">International Defence Exhibition &amp; Seminar • 19–22 Nov 2026 • Islamabad</p>
+            <div className="flex flex-wrap items-center gap-2 mt-3">
+              <span className="text-[11px] px-3 py-1 rounded-full bg-white/10 text-white capitalize border border-white/20">{user.role.replace(/_/g, ' ')}</span>
+              <span className="text-[11px] px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-100 border border-emerald-400/30">Live ops</span>
+              <span className="text-[11px] px-3 py-1 rounded-full bg-blue-500/20 text-blue-100 border border-blue-400/30">SLA 99.4%</span>
+            </div>
+          </div>
+          <div className="bg-black/20 border border-white/10 rounded-xl p-4 min-w-[240px]">
+            <p className="text-xs text-slate-200">Today</p>
+            <p className="text-3xl font-semibold text-white mt-1">20 Mar 2026</p>
+            <p className="text-xs text-slate-300 mt-1">Operational windows • GMT+5</p>
+            <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+              {quickAlerts.map(a => (
+                <div key={a.label} className={`rounded-lg border text-[11px] px-2 py-1 ${a.tone}`}>
+                  <p className="font-semibold">{a.value}</p>
+                  <p className="opacity-80">{a.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <img src="https://ideaspakistan.gov.pk/static/images/IDEAS.png" alt="IDEAS Logo" className="h-16 object-contain opacity-80 hidden md:block" crossOrigin="anonymous" />
+      </div>
+
+      {/* Ops health tiles */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="rounded-xl border border-border bg-card/80 backdrop-blur p-4">
+          <p className="text-xs text-muted-foreground">Ops Health</p>
+          <div className="flex items-end gap-2 mt-2">
+            <p className="text-3xl font-semibold text-green-600">99.4%</p>
+            <span className="text-[11px] text-muted-foreground mb-1">uptime</span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">All modules nominal. 2 minor alerts under watch.</p>
+        </div>
+        <div className="rounded-xl border border-border bg-card/80 backdrop-blur p-4">
+          <p className="text-xs text-muted-foreground">Access Control</p>
+          <div className="flex items-end gap-2 mt-2">
+            <p className="text-3xl font-semibold text-blue-600">18.2k</p>
+            <span className="text-[11px] text-muted-foreground mb-1">scans today</span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">Gate A peak at 09:30. No anti-passback violations.</p>
+        </div>
+        <div className="rounded-xl border border-border bg-card/80 backdrop-blur p-4">
+          <p className="text-xs text-muted-foreground">Comms Snapshot</p>
+          <div className="flex items-end gap-2 mt-2">
+            <p className="text-3xl font-semibold text-amber-600">42</p>
+            <span className="text-[11px] text-muted-foreground mb-1">open tickets</span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">12 SLA-watch, 3 critical (security). WhatsApp bot deflected 63%.</p>
+        </div>
       </div>
 
       {/* Stat row */}
@@ -91,6 +153,70 @@ export default function AdminDashboard({ user, onNavigate }: Props) {
             <p className="text-xs text-muted-foreground mt-1">{s.label}</p>
           </div>
         ))}
+      </div>
+
+      {/* RFP alignment & milestones */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="bg-card border border-border rounded-lg p-4">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-semibold text-sm">RFP Module Coverage</h3>
+            <span className="text-[11px] px-2 py-0.5 rounded-full bg-primary/10 text-primary">{moduleCoverage}%</span>
+          </div>
+          <p className="text-xs text-muted-foreground mb-2">{allowed.length} / {rfpModules.length} modules exposed to your role.</p>
+          <div className="h-2 rounded-full bg-muted overflow-hidden">
+            <div className="h-full bg-primary rounded-full" style={{ width: `${moduleCoverage}%` }} />
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-muted-foreground">
+            <p>Mobility stack: Android, iOS, Harmony, WhatsApp</p>
+            <p>Security stack: CCTV, Cyber, Biometric, Incident</p>
+            <p>Ops stack: Logistics, Vehicles, Event, Registration</p>
+            <p>Engagement: AI Chatbot, Auto Email, Social Monitoring</p>
+          </div>
+        </div>
+
+        <div className="bg-card border border-border rounded-lg p-4">
+          <h3 className="font-semibold text-sm mb-3">Procurement Timeline (RFP)</h3>
+          <div className="space-y-2 text-xs">
+            {[
+              { label: 'Pre-bid meeting', date: '16 Mar 2026', status: 'Done' },
+              { label: 'Bid submission (EPADS)', date: '26 Mar 2026', status: 'Due' },
+              { label: 'Tech opening', date: '26 Mar 2026', status: 'Due' },
+              { label: 'Contract start', date: '07 days post-award', status: 'Planned' },
+              { label: 'Contract end', date: '31 Dec 2026 (+2y extendable)', status: 'Planned' },
+            ].map(item => (
+              <div key={item.label} className="flex items-center justify-between border-b border-border last:border-0 pb-1">
+                <span className="text-foreground">{item.label}</span>
+                <span className="text-muted-foreground">{item.date}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-card border border-border rounded-lg p-4">
+          <h3 className="font-semibold text-sm mb-3">Compliance & Risk</h3>
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center justify-between">
+              <span>Bid Security</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">PKR 1,000,000</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Performance Guarantee</span>
+              <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">10% of contract</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Advance Payment</span>
+              <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">Not allowed</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Blacklisting checks</span>
+              <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">PPRA Rule 19</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Grievance window</span>
+              <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">GRC + PPRA appeal</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Two column live data */}
@@ -170,6 +296,41 @@ export default function AdminDashboard({ user, onNavigate }: Props) {
               </div>
               <p className="text-xs text-muted-foreground mt-1">{Math.round(z.used / z.total * 100)}% full</p>
             </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Badge & access mix */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        {[
+          { label: 'Badge mix', value: 'VVIP 12% • VIP 24% • Exhibitor 28% • Visitor 30% • Media 6%', color: 'bg-blue-50 border-blue-100 text-blue-800' },
+          { label: 'Access scans today', value: '18,240', color: 'bg-emerald-50 border-emerald-100 text-emerald-800' },
+          { label: 'Avg gate wait', value: '2m 40s', color: 'bg-amber-50 border-amber-100 text-amber-800' },
+          { label: 'Overstay alerts', value: '5 vehicles flagged', color: 'bg-rose-50 border-rose-100 text-rose-800' },
+        ].map(c => (
+          <div key={c.label} className={`rounded-lg border ${c.color} p-3 text-xs`}>
+            <p className="font-semibold text-foreground">{c.label}</p>
+            <p className="mt-1 text-sm">{c.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick actions */}
+      <div className="bg-card border border-border rounded-xl p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-sm">Quick Actions</h3>
+          <p className="text-[11px] text-muted-foreground">Jump into the most-used modules</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {quickLinks.map(link => (
+            <button
+              key={link.id}
+              onClick={() => onNavigate(link.id)}
+              className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg border border-border hover:border-primary hover:text-primary transition-colors bg-secondary/60"
+            >
+              <span className={`w-2 h-2 rounded-full ${link.color} opacity-80`} />
+              <span className="font-semibold">{link.label}</span>
+            </button>
           ))}
         </div>
       </div>
