@@ -126,89 +126,110 @@ export default function Home() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #1a3a2a 0%, #0f2318 50%, #1a3a2a 100%)' }}>
-        <div className="w-full max-w-md mx-4">
-          <div className="bg-card rounded-xl shadow-2xl overflow-hidden border border-border">
-            <div className="bg-primary px-8 pt-8 pb-6 text-center">
-              <div className="flex justify-center mb-4">
-                <img src="https://ideaspakistan.gov.pk/static/images/IDEAS.png" alt="IDEAS Logo" className="h-16 object-contain" crossOrigin="anonymous" />
-              </div>
-              <h1 className="text-primary-foreground text-xl font-bold tracking-wide">IDEAS 2026</h1>
-              <p className="text-primary-foreground/70 text-sm mt-1">International Defence Exhibition & Seminar</p>
-              <p className="text-primary-foreground/60 text-xs mt-1">DEPO Management Portal</p>
-            </div>
-
-            <div className="px-8 py-6">
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Email Address</label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="user@depo.gov.pk"
-                    className="w-full px-3 py-2 border border-input rounded-md text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Password</label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full px-3 py-2 border border-input rounded-md text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-                    required
-                  />
-                </div>
-                {error && <p className="text-destructive text-sm bg-destructive/10 px-3 py-2 rounded-md">{error}</p>}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-primary text-primary-foreground py-2.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-60"
-                >
-                  {loading ? 'Authenticating...' : 'Login to Portal'}
-                </button>
-              </form>
-
-              <div className="mt-6 border-t border-border pt-4">
-                <p className="text-xs text-muted-foreground font-semibold mb-2">Test Accounts:</p>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {[
-                    { label: 'Admin', email: 'admin@depo.gov.pk', pw: 'admin123' },
-                    { label: 'Event Mgr', email: 'events@depo.gov.pk', pw: 'events123' },
-                    { label: 'Badge Officer', email: 'badges@depo.gov.pk', pw: 'badge123' },
-                    { label: 'Parking', email: 'parking@depo.gov.pk', pw: 'park123' },
-                    { label: 'Delegation', email: 'delegation@depo.gov.pk', pw: 'deleg123' },
-                    { label: 'VIP Guest', email: 'vip001@ideas2026.pk', pw: 'vip123' },
-                    { label: 'Exhibitor', email: 'uk.exhibitor@ideas2026.pk', pw: 'uk123' },
-                    { label: 'Security', email: 'security@depo.gov.pk', pw: 'sec123' },
-                  ].map(u => (
-                    <button
-                      key={u.email}
-                      onClick={() => { setEmail(u.email); setPassword(u.pw) }}
-                      className="text-xs px-2 py-1.5 bg-secondary text-secondary-foreground rounded hover:bg-accent hover:text-accent-foreground transition-colors text-left truncate"
-                    >
-                      {u.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+      <>
+      <div
+        className="min-h-screen w-full text-white"
+        style={{
+          background:
+            'radial-gradient(circle at 20% 20%, rgba(0,128,80,0.14), transparent 32%), radial-gradient(circle at 80% 18%, rgba(0,128,80,0.16), transparent 30%), linear-gradient(135deg, #0d1514 0%, #0a1814 46%, #0f1f19 100%)',
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-4 py-10 lg:py-14 flex flex-col lg:flex-row items-center gap-10">
+          <div className="flex-1 text-white space-y-5">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs tracking-wide uppercase">Official • DEPO</div>
+            <h1 className="text-3xl lg:text-4xl font-bold leading-tight">IDEAS 2026<br />Management Portal</h1>
+            <p className="text-white/75 max-w-xl text-sm lg:text-base">Role-based access for admin, logistics, security, exhibitors, VIPs and visitors. Local-storage only demo that mirrors the RFP modules.</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm text-white/85">
+              {['Logistics', 'Parking', 'Delegations', 'Badging', 'Media', 'Support'].map(item => (
+                <div key={item} className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 shadow-sm shadow-black/20">{item}</div>
+              ))}
             </div>
           </div>
 
-          <div className="text-center mt-4 space-y-2">
-            <button
-              onClick={() => { setMobileDemo(true); resetMobile() }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-white/30 text-white/80 text-xs hover:bg-white/10 transition-colors"
-            >
-              <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M12 17h.01"/></svg>
-              View Mobile App Demo
-            </button>
-            <p className="text-white/40 text-xs">Defence Export Promotion Organization &copy; 2026</p>
+          <div className="w-full max-w-md mx-auto lg:mx-0">
+            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border border-border/70">
+              <div className="bg-primary px-8 pt-8 pb-6 text-center">
+                <div className="flex justify-center mb-4">
+                  <img src="https://ideaspakistan.gov.pk/static/images/IDEAS.png" alt="IDEAS Logo" className="h-16 object-contain" crossOrigin="anonymous" />
+                </div>
+                <h2 className="text-primary-foreground text-xl font-bold tracking-wide">Secure Login</h2>
+                <p className="text-primary-foreground/70 text-sm mt-1">International Defence Exhibition &amp; Seminar</p>
+                <p className="text-primary-foreground/60 text-xs mt-1">DEPO Management Portal</p>
+              </div>
+
+              <div className="px-8 py-6">
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      placeholder="user@depo.gov.pk"
+                      className="w-full px-3 py-2 border border-input rounded-md text-sm bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1">Password</label>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full px-3 py-2 border border-input rounded-md text-sm bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                      required
+                    />
+                  </div>
+                  {error && <p className="text-destructive text-sm bg-destructive/10 px-3 py-2 rounded-md">{error}</p>}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-primary text-primary-foreground py-2.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-60"
+                  >
+                    {loading ? 'Authenticating...' : 'Login to Portal'}
+                  </button>
+                </form>
+
+                <div className="mt-6 border-t border-border pt-4">
+                  <p className="text-xs text-muted-foreground font-semibold mb-2">Quick test accounts</p>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {[
+                      { label: 'Admin', email: 'admin@depo.gov.pk', pw: 'admin123' },
+                      { label: 'Event Mgr', email: 'events@depo.gov.pk', pw: 'events123' },
+                      { label: 'Badge Officer', email: 'badges@depo.gov.pk', pw: 'badge123' },
+                      { label: 'Parking', email: 'parking@depo.gov.pk', pw: 'park123' },
+                      { label: 'Delegation', email: 'delegation@depo.gov.pk', pw: 'deleg123' },
+                      { label: 'VIP Guest', email: 'vip001@ideas2026.pk', pw: 'vip123' },
+                      { label: 'Exhibitor', email: 'uk.exhibitor@ideas2026.pk', pw: 'uk123' },
+                      { label: 'Security', email: 'security@depo.gov.pk', pw: 'sec123' },
+                    ].map(u => (
+                      <button
+                        key={u.email}
+                        onClick={() => { setEmail(u.email); setPassword(u.pw) }}
+                        className="text-xs px-2 py-1.5 bg-secondary text-secondary-foreground rounded hover:bg-accent hover:text-accent-foreground transition-colors text-left truncate"
+                      >
+                        {u.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <div className="text-center space-y-2 pb-8">
+          <button
+            onClick={() => { setMobileDemo(true); resetMobile() }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-white/30 text-white/80 text-xs hover:bg-white/10 transition-colors"
+          >
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M12 17h.01"/></svg>
+            View Mobile App Demo
+          </button>
+          <p className="text-white/40 text-xs">Defence Export Promotion Organization &copy; 2026</p>
+        </div>
+      </div>
 
         {mobileDemo && (
           <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
@@ -667,7 +688,7 @@ export default function Home() {
             </div>
           </div>
         )}
-      </div>
+      </>
     )
   }
 
